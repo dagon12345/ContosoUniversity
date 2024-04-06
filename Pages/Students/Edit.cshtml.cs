@@ -25,6 +25,7 @@ namespace ContosoUniversity.Pages.Students
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            /*
             if (id == null)
             {
                 return NotFound();
@@ -36,13 +37,27 @@ namespace ContosoUniversity.Pages.Students
                 return NotFound();
             }
             Student = student;
+            return Page();*/
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Student = await _context.Students.FindAsync(id);
+
+            if (Student == null)
+            {
+                return NotFound();
+            }
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int id)
         {
+            /*
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -67,6 +82,26 @@ namespace ContosoUniversity.Pages.Students
             }
 
             return RedirectToPage("./Index");
+            */
+
+            var studentToUpdate = await _context.Students.FindAsync(id);
+
+            if (studentToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            if (await TryUpdateModelAsync<Student>(
+                studentToUpdate,
+                "student",
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            return Page();
+            
         }
 
         private bool StudentExists(int id)
