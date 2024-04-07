@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+/*Code for paginating our student list.*/
 
 namespace ContosoUniversity
 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ContosoUniversity.Pages.Students
 {
+    /*In this class we've implemented Sorting, Filtering search and paging. Our grouping is in our About.cshtml*/
     public class IndexModel : PageModel
     {
         private readonly SchoolContext _context;
