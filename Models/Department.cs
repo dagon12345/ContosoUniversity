@@ -30,6 +30,8 @@ Therefore the InstructorID property is included as the FK to the Instructor enti
         public int? InstructorID { get; set; }
 
         public Instructor Administrator { get; set; }
+
+        //A department may have many courses, so there's a Courses navigation property:
         public ICollection<Course> Courses { get; set; }
     }
 }
