@@ -5,25 +5,34 @@ namespace ContosoUniversity.Data
 {
     public class SchoolContext : DbContext
     {
-        public SchoolContext (DbContextOptions<SchoolContext> options)
+        public SchoolContext(DbContextOptions<SchoolContext> options)
             : base(options)
         {
         }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet <Enrollment> Enrollments { get; set; }
-        public DbSet <Course> Courses { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Course> Courses { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<OfficeAssignment> OfficeAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.Entity<Course>().ToTable(nameof(Course))
-                .HasMany(c => c.Instructors)
-                .WithMany(i => i.Courses);
+            modelBuilder.Entity<Course>().ToTable(nameof(Course))
+                 .HasMany(c => c.Instructors)
+                 .WithMany(i => i.Courses);
             modelBuilder.Entity<Student>().ToTable(nameof(Student));
             modelBuilder.Entity<Instructor>().ToTable(nameof(Instructor));
+
+            /*IsConcurrencyToken configures the property as a concurrency token.
+             On updates, the concurrency token value in the database is compared to the original value to ensure it has not changed 
+             since the instance was retrieved from the database. 
+             If it has changed, a DbUpdateConcurrencyException is thrown and changes are not applied.*/
+            modelBuilder.Entity<Department>()
+      .Property<byte[]>("ConcurrencyToken")
+      .IsRowVersion();
+
         }
     }
 }
